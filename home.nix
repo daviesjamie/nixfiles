@@ -9,7 +9,11 @@
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
-  home.packages = [
-    pkgs.htop
+  home.packages = with pkgs; [
+    fzf
+    ghq
+    hledger
+    jq
+    ripgrep
   ];
 }
