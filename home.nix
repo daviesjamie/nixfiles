@@ -1,10 +1,7 @@
-{ config, pkgs, ... }:
+{ homeDirectory, pkgs, stateVersion, username }:
 
 {
-  home.username = "jagd";
-  home.homeDirectory = "/Users/jagd";
-
-  home.stateVersion = "22.05";
+  home = { inherit homeDirectory stateVersion username; };
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;

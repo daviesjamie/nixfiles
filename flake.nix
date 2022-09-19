@@ -7,14 +7,23 @@
 
   outputs = { nixpkgs, home-manager, ... }:
     let
+      stateVersion = "22.05";
       system = "aarch64-darwin";
-      pkgs = nixpkgs.legacyPackages.${system};
+      username = "jagd";
+      homeDirectory = "/Users/jagd";
+
+      pkgs = import nixpkgs {
+        inherit system;
+        config = {
+          allowUnfree = true;
+        };
+      };
     in {
-      homeConfigurations.jagd = home-manager.lib.homeManagerConfiguration {
+      homeConfigurations.${username} = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
 
         modules = [
-          ./home.nix
+          (import ./home.nix { inherit homeDirectory pkgs stateVersion username; })
         ];
       };
     };
