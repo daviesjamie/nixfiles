@@ -21,6 +21,42 @@
     '';
   };
 
+  programs.starship = {
+    enable = true;
+    enableZshIntegration = true;
+    settings = {
+      format = pkgs.lib.concatStrings [
+        "$username"
+        "$hostname"
+        "$directory"
+        "$git_branch"
+        "$git_state"
+        "$git_status"
+        "$cmd_duration"
+        "$line_break"
+        "$character"
+      ];
+
+      directory = {
+        style = "blue";
+      };
+
+      character = {
+        success_symbol = "❯";
+        error_symbol = "[❯](red)";
+      };
+
+      git_branch = {
+        format = "[$branch]($style)";
+      };
+
+      cmd_duration = {
+        format = "[$duration]($style)";
+        style = "yellow";
+      };
+    };
+  };
+
   programs.zsh = {
     enable = true;
     enableCompletion = true;
