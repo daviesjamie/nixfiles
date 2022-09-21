@@ -1,5 +1,21 @@
 {
   "nodes": {
+    "base16-shell": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1661653332,
+        "narHash": "sha256-sQ6mJxc2nY86Ip+rw69Xs14GSYVv02yQbDHp6Q+vwOA=",
+        "owner": "base16-project",
+        "repo": "base16-shell",
+        "rev": "4de166baf0ad1e2a2bea5393c9b07e3eabe6ae75",
+        "type": "github"
+      },
+      "original": {
+        "owner": "base16-project",
+        "repo": "base16-shell",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -39,6 +55,7 @@
     },
     "root": {
       "inputs": {
+        "base16-shell": "base16-shell",
         "home-manager": "home-manager",
         "nixpkgs": "nixpkgs"
       }

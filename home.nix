@@ -1,4 +1,4 @@
-{ homeDirectory, pkgs, stateVersion, username }:
+{ base16-shell, homeDirectory, pkgs, stateVersion, username }:
 
 {
   home = { inherit homeDirectory stateVersion username; };
@@ -66,8 +66,17 @@
     };
   };
 
-  programs.zsh = {
+  programs.zsh = let
+    default_theme = "tomorrow-night";
+  in {
     enable = true;
     enableCompletion = true;
+
+    initExtra = ''
+      BASE16_THEME_DEFAULT="${default_theme}"
+      [ -n "$PS1" ] && \
+        [ -s "${base16-shell.outPath}/profile_helper.sh" ] && \
+          source "${base16-shell.outPath}/profile_helper.sh"
+    '';
   };
 }
