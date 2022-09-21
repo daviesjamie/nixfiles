@@ -7,7 +7,6 @@
   programs.home-manager.enable = true;
 
   home.packages = with pkgs; [
-    fzf
     ghq
     hledger
     jq
@@ -19,6 +18,16 @@
     extraOptions = ''
       experimental-features = nix-command flakes
     '';
+  };
+
+  programs.fzf = {
+    enable = true;
+    enableZshIntegration = true;
+    defaultOptions = [
+      "--height 25%"
+      "--min-height 15"
+      "--reverse"
+    ];
   };
 
   programs.starship = {
