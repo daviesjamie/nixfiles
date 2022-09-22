@@ -102,11 +102,23 @@
     enable = true;
     enableCompletion = true;
 
+    envExtra = ''
+      export GHQ_ROOT="$HOME/src"
+    '';
+
     initExtra = ''
       BASE16_THEME_DEFAULT="${default_theme}"
       [ -n "$PS1" ] && \
         [ -s "${base16-shell.outPath}/profile_helper.sh" ] && \
           source "${base16-shell.outPath}/profile_helper.sh"
+
+      gcd() {
+        local repo
+        local repo_path
+        repo=$(ghq list | fzf) &&
+          repo_path=$(ghq list -p -e "$repo") &&
+          cd "$repo_path"
+      }
     '';
   };
 }
