@@ -4,13 +4,7 @@
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
-  imports = [
-    ./direnv.nix
-    ./fzf.nix
-    ./starship.nix
-    ./zsh.nix
-  ];
-
+  # Enable `nix` command and flakes support
   nix = {
     package = pkgs.nixFlakes;
     extraOptions = ''
@@ -18,8 +12,19 @@
     '';
   };
 
+  imports = [
+    ./direnv.nix
+    ./fzf.nix
+    ./starship.nix
+    ./zsh.nix
+  ] ++ [
+    ../modules/ghq.nix
+  ];
+
+  programs.ghq.enable = true;
+  programs.ghq.enableZshIntegration = true;
+
   home.packages = with pkgs; [
-    ghq
     jq
     ripgrep
   ];
