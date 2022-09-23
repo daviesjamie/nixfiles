@@ -32,7 +32,7 @@
         extraSpecialArgs = { inherit inputs pkgs; };
 
         modules = [
-          ./home.nix
+          ./home
           {
             home = {
               inherit stateVersion username;
