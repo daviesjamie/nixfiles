@@ -55,15 +55,6 @@ in {
       # - partial-word matches
       # - substring matches
       zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
-
-      ########################################################################
-      # BASE16 THEME
-      ########################################################################
-
-      BASE16_THEME_DEFAULT="${base16.defaultTheme}"
-      [ -n "$PS1" ] && \
-        [ -s "${base16.path}/profile_helper.sh" ] && \
-          source "${base16.path}/profile_helper.sh"
     '';
   };
 }

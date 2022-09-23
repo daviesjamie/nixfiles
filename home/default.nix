@@ -18,8 +18,12 @@
     ./starship.nix
     ./zsh.nix
   ] ++ [
+    ../modules/base16-shell.nix
     ../modules/ghq.nix
   ];
+
+  programs.base16.defaultTheme = "tomorrow-night";
+  programs.base16.enableZshIntegration = true;
 
   programs.ghq.enable = true;
   programs.ghq.enableZshIntegration = true;
