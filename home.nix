@@ -1,8 +1,6 @@
-{ base16-shell, config, homeDirectory, pkgs, stateVersion, username, ... }:
+{ config, inputs, pkgs, ... }:
 
 {
-  home = { inherit homeDirectory stateVersion username; };
-
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
@@ -85,8 +83,8 @@
       };
 
       git_state = {
-		format = "([$state( $progress_current/$progress_total)]($style))";
-		style = "bright-black";
+        format = "([$state( $progress_current/$progress_total)]($style))";
+        style = "bright-black";
       };
 
       git_status = {
@@ -112,7 +110,8 @@
   };
 
   programs.zsh = let
-    default_theme = "tomorrow-night";
+    base16Path = inputs.base16-shell.outPath;
+    defaultTheme = "tomorrow-night";
   in {
     enable = true;
     enableCompletion = true;
@@ -122,10 +121,10 @@
     '';
 
     initExtra = ''
-      BASE16_THEME_DEFAULT="${default_theme}"
+      BASE16_THEME_DEFAULT="${defaultTheme}"
       [ -n "$PS1" ] && \
-        [ -s "${base16-shell.outPath}/profile_helper.sh" ] && \
-          source "${base16-shell.outPath}/profile_helper.sh"
+        [ -s "${base16Path}/profile_helper.sh" ] && \
+          source "${base16Path}/profile_helper.sh"
 
       gcd() {
         local repo
