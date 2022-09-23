@@ -1,4 +1,4 @@
-{ base16-shell, config, homeDirectory, pkgs, stateVersion, username }:
+{ base16-shell, config, homeDirectory, pkgs, stateVersion, username, ... }:
 
 {
   home = { inherit homeDirectory stateVersion username; };

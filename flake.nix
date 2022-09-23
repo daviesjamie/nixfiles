@@ -25,8 +25,12 @@
         inherit pkgs;
 
         modules = [
-          (import ./home.nix { inherit base16-shell homeDirectory pkgs stateVersion username; })
+          ./home.nix
         ];
+
+        extraSpecialArgs = {
+          inherit base16-shell homeDirectory pkgs stateVersion username;
+        };
       };
     };
 }
