@@ -17,5 +17,6 @@
 
   swapDevices = [ ];
 
+  nixpkgs.hostPlatform.system = "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }

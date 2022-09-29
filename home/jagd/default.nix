@@ -1,8 +1,18 @@
-{ pkgs, ... }:
+{ homeDirectory, pkgs, username, ... }:
 
 {
-  # Let Home Manager install and manage itself.
-  programs.home-manager.enable = true;
+  imports = [
+    ./direnv.nix
+    ./fzf.nix
+    ./git.nix
+    ./starship.nix
+    ./zsh.nix
+  ];
+
+  home = {
+    inherit homeDirectory username;
+    stateVersion = "22.05";
+  };
 
   # Enable `nix` command and flakes support
   nix = {
@@ -12,16 +22,8 @@
     '';
   };
 
-  imports = [
-    ./direnv.nix
-    ./fzf.nix
-    ./git.nix
-    ./starship.nix
-    ./zsh.nix
-  ] ++ [
-    ../modules/base16-shell.nix
-    ../modules/ghq.nix
-  ];
+  # Let Home Manager install and manage itself.
+  programs.home-manager.enable = true;
 
   programs.base16.defaultTheme = "tomorrow-night";
   programs.base16.enableZshIntegration = true;

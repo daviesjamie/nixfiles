@@ -1,6 +1,10 @@
 { config, pkgs, ... }:
 
 {
+  imports = [
+    ./hardware-configuration.nix
+  ];
+
   networking.hostName = "basil";
 
   boot.loader.grub.enable = true;

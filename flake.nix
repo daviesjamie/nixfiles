@@ -1,5 +1,5 @@
 {
-  description = "my nix system configurations";
+  description = "daviesjamie's Nix Configurations";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
@@ -11,43 +11,46 @@
     base16-shell.flake = false;
   };
 
-  outputs = inputs@{ nixpkgs, home-manager, base16-shell, ... }:
+  outputs = { nixpkgs, home-manager, base16-shell, ... }@inputs:
     let
-      isDarwin = system: (builtins.elem system inputs.nixpkgs.lib.platforms.darwin);
-      homePrefix = system: if isDarwin system then "/Users" else "/home";
+      forAllSystems = nixpkgs.lib.genAttrs [
+        "aarch64-darwin"
+        "x86_64-darwin"
+        "x86_64-linux"
+      ];
 
-      stateVersion = "22.05";
-      system = "aarch64-darwin";
-      username = "jagd";
+    in rec {
+      homeManagerModules = import ./modules/home-manager;
 
-      pkgs = import nixpkgs {
-        inherit system;
-        config = {
-          allowUnfree = true;
+      legacyPackages = forAllSystems (system:
+        import inputs.nixpkgs {
+          inherit system;
+          config.allowUnfree = true;
+        }
+      );
+
+      nixosConfigurations = {
+        basil = nixpkgs.lib.nixosSystem {
+          pkgs = legacyPackages.x86_64-linux;
+          specialArgs = { inherit inputs; };
+          modules = [
+            ./hosts/basil
+          ];
         };
       };
-    in {
-      homeConfigurations.${username} = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
-        extraSpecialArgs = { inherit inputs pkgs; };
 
-        modules = [
-          ./home
-          {
-            home = {
-              inherit stateVersion username;
-              homeDirectory = "${homePrefix system}/${username}";
-            };
-          }
-        ];
-      };
-
-      nixosConfigurations.basil = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        modules = [
-          ./hosts/basil/hardware.nix
-          ./hosts/basil/configuration.nix
-        ];
+      homeConfigurations = {
+        "jagd@makani" = home-manager.lib.homeManagerConfiguration {
+          pkgs = legacyPackages.aarch64-darwin;
+          extraSpecialArgs = {
+            inherit inputs;
+            username = "jagd";
+            homeDirectory = "/Users/jagd";
+          };
+          modules = (builtins.attrValues homeManagerModules) ++ [
+            ./home/jagd
+          ];
+        };
       };
     };
 }
