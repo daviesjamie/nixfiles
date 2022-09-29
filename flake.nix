@@ -41,5 +41,13 @@
           }
         ];
       };
+
+      nixosConfigurations.basil = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [
+          ./hosts/basil/hardware.nix
+          ./hosts/basil/configuration.nix
+        ];
+      };
     };
 }
