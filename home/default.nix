@@ -15,6 +15,7 @@
   imports = [
     ./direnv.nix
     ./fzf.nix
+    ./git.nix
     ./starship.nix
     ./zsh.nix
   ] ++ [
