@@ -17,6 +17,10 @@
     in rec {
       inherit lib;
 
+      formatter = lib.forAllSystems (system:
+        legacyPackages.${system}.alejandra
+      );
+
       homeManagerModules = import ./modules/home-manager;
 
       legacyPackages = lib.forAllSystems (system:
