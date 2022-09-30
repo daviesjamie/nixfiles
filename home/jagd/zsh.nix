@@ -29,7 +29,6 @@ in {
     initExtra = ''
       ########################################################################
       # HISTORY
-      ########################################################################
 
       # Remove unnecessary whitespace from commands when saving to history
       setopt HIST_REDUCE_BLANKS
@@ -39,8 +38,18 @@ in {
       setopt HIST_VERIFY
 
       ########################################################################
-      # COMPLETION
+      # KEYBINDINGS
+
+      # Use emacs-style keybindings
+      bindkey -e
+
+      # Force mapping of home/delete/end keys to the right thing
+      bindkey "^[[1~" beginning-of-line
+      bindkey "^[[4~" end-of-line
+      bindkey "^[[3~" delete-char
+
       ########################################################################
+      # COMPLETION
 
       unsetopt MENU_COMPLETE   # don't autoselect the first completion entry
       setopt ALWAYS_TO_END     # always move cursor to end of word after completion
