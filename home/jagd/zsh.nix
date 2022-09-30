@@ -1,11 +1,8 @@
-{ config, inputs, ... }:
-
-let
-  base16 = {
-    defaultTheme = "tomorrow-night";
-    path = inputs.base16-shell.outPath;
-  };
-
+{
+  config,
+  inputs,
+  ...
+}: let
   historyFile = "${config.home.homeDirectory}/.zsh_history";
 in {
   programs.zsh = {
@@ -13,12 +10,12 @@ in {
     enableCompletion = true;
 
     history = {
-      extended = true;     # Save start/end timestamps for each command
-      ignoreDups = true;   # Remove older duplicates when new lines are added
-      ignoreSpace = true;  # Don't keep any lines starting with whitespace
+      extended = true; # Save start/end timestamps for each command
+      ignoreDups = true; # Remove older duplicates when new lines are added
+      ignoreSpace = true; # Don't keep any lines starting with whitespace
       path = historyFile;
-      save = 10000;        # Number of lines to write to history file
-      size = 10000;        # Number of lines to keep in session
+      save = 10000; # Number of lines to write to history file
+      size = 10000; # Number of lines to keep in session
     };
 
     envExtra = ''

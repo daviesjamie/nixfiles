@@ -1,6 +1,9 @@
-{ homeDirectory, pkgs, username, ... }:
-
 {
+  homeDirectory,
+  pkgs,
+  username,
+  ...
+}: {
   imports = [
     ./direnv.nix
     ./fzf.nix

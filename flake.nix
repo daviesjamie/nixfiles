@@ -11,47 +11,51 @@
     base16-shell.flake = false;
   };
 
-  outputs = { nixpkgs, home-manager, base16-shell, ... }@inputs:
-    let
-      lib = import ./lib { inherit inputs; };
-    in rec {
-      inherit lib;
+  outputs = {
+    nixpkgs,
+    ...
+  } @ inputs: let
+    lib = import ./lib {inherit inputs;};
+  in rec {
+    inherit lib;
 
-      formatter = lib.forAllSystems (system:
+    formatter = lib.forAllSystems (
+      system:
         legacyPackages.${system}.alejandra
-      );
+    );
 
-      homeManagerModules = import ./modules/home-manager;
+    homeManagerModules = import ./modules/home-manager;
 
-      legacyPackages = lib.forAllSystems (system:
+    legacyPackages = lib.forAllSystems (
+      system:
         import inputs.nixpkgs {
           inherit system;
           config.allowUnfree = true;
         }
-      );
+    );
 
-      nixosConfigurations = {
-        basil = nixpkgs.lib.nixosSystem {
-          pkgs = legacyPackages.x86_64-linux;
-          specialArgs = { inherit inputs; };
-          modules = [
-            ./hosts/basil
-          ];
-        };
-      };
-
-      homeConfigurations = {
-        "jagd@basil" = lib.mkHome {
-          pkgs = legacyPackages.x86_64-linux;
-          username = "jagd";
-          homeDirectory = "/home/jagd";
-        };
-
-        "jagd@makani" = lib.mkHome {
-          pkgs = legacyPackages.aarch64-darwin;
-          username = "jagd";
-          homeDirectory = "/Users/jagd";
-        };
+    nixosConfigurations = {
+      basil = nixpkgs.lib.nixosSystem {
+        pkgs = legacyPackages.x86_64-linux;
+        specialArgs = {inherit inputs;};
+        modules = [
+          ./hosts/basil
+        ];
       };
     };
+
+    homeConfigurations = {
+      "jagd@basil" = lib.mkHome {
+        pkgs = legacyPackages.x86_64-linux;
+        username = "jagd";
+        homeDirectory = "/home/jagd";
+      };
+
+      "jagd@makani" = lib.mkHome {
+        pkgs = legacyPackages.aarch64-darwin;
+        username = "jagd";
+        homeDirectory = "/Users/jagd";
+      };
+    };
+  };
 }

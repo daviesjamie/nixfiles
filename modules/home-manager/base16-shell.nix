@@ -1,8 +1,10 @@
-{ config, inputs, lib, ... }:
-
-with lib;
-
-let
+{
+  config,
+  inputs,
+  lib,
+  ...
+}:
+with lib; let
   cfg = config.programs.base16;
   base16Path = inputs.base16-shell.outPath;
 in {

@@ -1,6 +1,9 @@
-{ config, lib, pkgs, ... }:
-
-let
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
   cfg = config.programs.ghq;
   package = pkgs.ghq;
   ghqRoot = "${config.home.homeDirectory}/src";
@@ -26,7 +29,7 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-    home.packages = [ package ];
+    home.packages = [package];
 
     programs.bash.initExtra = lib.mkIf cfg.enableBashIntegration ''
       export GHQ_ROOT='${ghqRoot}'";
