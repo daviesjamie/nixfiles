@@ -40,6 +40,18 @@
       };
 
       homeConfigurations = {
+        "jagd@basil" = home-manager.lib.homeManagerConfiguration {
+          pkgs = legacyPackages.x86_64-linux;
+          extraSpecialArgs = {
+            inherit inputs;
+            username = "jagd";
+            homeDirectory = "/home/jagd";
+          };
+          modules = (builtins.attrValues homeManagerModules) ++ [
+            ./home/jagd
+          ];
+        };
+
         "jagd@makani" = home-manager.lib.homeManagerConfiguration {
           pkgs = legacyPackages.aarch64-darwin;
           extraSpecialArgs = {
