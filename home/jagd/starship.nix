@@ -19,17 +19,19 @@
       ];
 
       username = {
-        format = "[$user]($style) ";
+        format = "[$user]($style)";
         style_root = "red";
         style_user = "blue";
       };
 
       hostname = {
-        style = "magenta";
+        format = "[@$hostname]($style)";
+        style = "purple";
         ssh_symbol = "";
       };
 
       directory = {
+        format = " [$path]($style)[$read_only]($read_only_style) ";
         style = "cyan";
         truncate_to_repo = false;
         truncation_length = 8;
