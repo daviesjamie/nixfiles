@@ -35,7 +35,12 @@
     vim
   ];
 
-  services.openssh.enable = true;
+  services.openssh = {
+    enable = true;
+    passwordAuthentication = false;
+    kbdInteractiveAuthentication = false;
+    permitRootLogin = "no";
+  };
 
   system.stateVersion = "22.05";
 }
