@@ -13,16 +13,13 @@
 
   outputs = { nixpkgs, home-manager, base16-shell, ... }@inputs:
     let
-      forAllSystems = nixpkgs.lib.genAttrs [
-        "aarch64-darwin"
-        "x86_64-darwin"
-        "x86_64-linux"
-      ];
-
+      lib = import ./lib { inherit inputs; };
     in rec {
+      inherit lib;
+
       homeManagerModules = import ./modules/home-manager;
 
-      legacyPackages = forAllSystems (system:
+      legacyPackages = lib.forAllSystems (system:
         import inputs.nixpkgs {
           inherit system;
           config.allowUnfree = true;
@@ -40,28 +37,16 @@
       };
 
       homeConfigurations = {
-        "jagd@basil" = home-manager.lib.homeManagerConfiguration {
+        "jagd@basil" = lib.mkHome {
           pkgs = legacyPackages.x86_64-linux;
-          extraSpecialArgs = {
-            inherit inputs;
-            username = "jagd";
-            homeDirectory = "/home/jagd";
-          };
-          modules = (builtins.attrValues homeManagerModules) ++ [
-            ./home/jagd
-          ];
+          username = "jagd";
+          homeDirectory = "/home/jagd";
         };
 
-        "jagd@makani" = home-manager.lib.homeManagerConfiguration {
+        "jagd@makani" = lib.mkHome {
           pkgs = legacyPackages.aarch64-darwin;
-          extraSpecialArgs = {
-            inherit inputs;
-            username = "jagd";
-            homeDirectory = "/Users/jagd";
-          };
-          modules = (builtins.attrValues homeManagerModules) ++ [
-            ./home/jagd
-          ];
+          username = "jagd";
+          homeDirectory = "/Users/jagd";
         };
       };
     };
