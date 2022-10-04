@@ -23,6 +23,20 @@
   in rec {
     inherit lib;
 
+    devShells = lib.forAllSystems (
+      system: let
+        pkgs = legacyPackages.${system};
+      in {
+        default = pkgs.mkShell {
+          buildInputs = with pkgs; [
+            age
+            sops
+            ssh-to-age
+          ];
+        };
+      }
+    );
+
     formatter = lib.forAllSystems (
       system:
         legacyPackages.${system}.alejandra
