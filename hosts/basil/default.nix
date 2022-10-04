@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  config,
+  pkgs,
+  ...
+}: {
   imports = [
     ./hardware-configuration.nix
     ./sops.nix
@@ -20,6 +24,7 @@
     '';
   };
 
+  users.mutableUsers = false;
   users.users.jagd = {
     isNormalUser = true;
     shell = pkgs.zsh;
@@ -27,6 +32,11 @@
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBJLkRU/0rnP7dYbZ/jRrl94vaDJvTi/JbwkZLDPIQOD"
     ];
+    passwordFile = config.sops.secrets."users/jagd/password".path;
+  };
+
+  sops.secrets."users/jagd/password" = {
+    neededForUsers = true;
   };
 
   environment.systemPackages = with pkgs; [
@@ -42,7 +52,4 @@
   };
 
   system.stateVersion = "22.05";
-
-  # Test sops-nix secret to ensure everything is set up properly
-  sops.secrets.test = {};
 }
