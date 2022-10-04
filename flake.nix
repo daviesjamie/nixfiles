@@ -9,10 +9,14 @@
 
     base16-shell.url = "github:base16-project/base16-shell";
     base16-shell.flake = false;
+
+    sops-nix.url = "github:Mic92/sops-nix";
+    sops-nix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = {
     nixpkgs,
+    sops-nix,
     ...
   } @ inputs: let
     lib = import ./lib {inherit inputs;};

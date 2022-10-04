@@ -1,9 +1,7 @@
-{
-  pkgs,
-  ...
-}: {
+{pkgs, ...}: {
   imports = [
     ./hardware-configuration.nix
+    ./sops.nix
   ];
 
   networking.hostName = "basil";
@@ -44,4 +42,7 @@
   };
 
   system.stateVersion = "22.05";
+
+  # Test sops-nix secret to ensure everything is set up properly
+  sops.secrets.test = {};
 }
