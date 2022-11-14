@@ -4,17 +4,21 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
-    home-manager.url = "github:nix-community/home-manager";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
-
     base16-shell.url = "github:base16-project/base16-shell";
     base16-shell.flake = false;
+
+    darwin.url = "github:lnl7/nix-darwin/master";
+    darwin.inputs.nixpkgs.follows = "nixpkgs";
+
+    home-manager.url = "github:nix-community/home-manager";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = {
+    darwin,
     nixpkgs,
     sops-nix,
     ...
@@ -22,6 +26,16 @@
     lib = import ./lib {inherit inputs;};
   in rec {
     inherit lib;
+
+    darwinConfigurations = {
+      makani = darwin.lib.darwinSystem {
+        system = "aarch64-darwin";
+        specialArgs = {inherit inputs;};
+        modules = [
+          ./hosts/makani
+        ];
+      };
+    };
 
     devShells = lib.forAllSystems (
       system: let
