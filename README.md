@@ -31,8 +31,8 @@ $ home-manager generations
 Assuming Nix is installed, a nix-darwin configuration can be bootstrapped by running the following from the root of this repo:
 
 ```
-$ nix --experimental-features 'nix-command flakes' build --no-link .#darwinConfigurations.makani.config.system.build.toplevel
-$ "$(nix --experimental-features 'nix-command flakes' path-info .#darwinConfigurations.makani.config.system.build.toplevel)"/sw/bin/darwin-rebuild switch --flake .#makani
+$ nix --experimental-features 'nix-command flakes' build --no-link .#darwinConfigurations.makani.system
+$ "$(nix --experimental-features 'nix-command flakes' path-info .#darwinConfigurations.makani.system)"/sw/bin/darwin-rebuild switch --flake .#makani
 ```
 
 After running these commands, the `darwin-rebuild` CLI tool will be installed and available - so any further updates can be made with the usual `darwin-rebuild` CLI:

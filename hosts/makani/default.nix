@@ -6,6 +6,8 @@
   # Enable configuration for nixbld group and users
   nix.configureBuildUsers = true;
 
+  programs.zsh.enable = true;
+
   # Rnable the nix-daemon service
   services.nix-daemon.enable = true;
 
