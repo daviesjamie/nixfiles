@@ -1,0 +1,14 @@
+name: Check code formatting
+
+on: pull_request
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: cachix/install-nix-action@v18
+      - name: Run linter
+        run: |
+          nix fmt
+          git diff --exit-code
