@@ -1,5 +1,6 @@
 {
   config,
+  inputs,
   pkgs,
   ...
 }: {
@@ -22,6 +23,9 @@
     extraOptions = ''
       experimental-features = nix-command flakes
     '';
+
+    # Pin nixpkgs to the same version that built the system
+    registry.nixpkgs.flake = inputs.nixpkgs;
   };
 
   users.mutableUsers = false;

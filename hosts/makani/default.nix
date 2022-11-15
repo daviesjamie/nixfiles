@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  inputs,
+  pkgs,
+  ...
+}: {
   environment = {
     loginShell = pkgs.zsh;
   };
@@ -6,9 +10,12 @@
   # Enable configuration for nixbld group and users
   nix.configureBuildUsers = true;
 
+  # Pin nixpkgs to the same version that built the system
+  nix.registry.nixpkgs.flake = inputs.nixpkgs;
+
   programs.zsh.enable = true;
 
-  # Rnable the nix-daemon service
+  # Enable the nix-daemon service
   services.nix-daemon.enable = true;
 
   system.defaults = {
