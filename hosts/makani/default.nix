@@ -84,4 +84,6 @@
     enableKeyMapping = true;
     remapCapsLockToControl = true;
   };
+
+  system.stateVersion = 4;
 }
