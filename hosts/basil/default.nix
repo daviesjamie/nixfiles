@@ -10,10 +10,14 @@
   ];
 
   networking.hostName = "basil";
+  networking.hostId = "4e9cb0b8";
 
-  boot.loader.grub.enable = true;
-  boot.loader.grub.version = 2;
-  boot.loader.grub.device = "/dev/sda";
+  boot.supportedFilesystems = ["zfs"];
+  # boot.loader.grub.enable = true;
+  # boot.loader.grub.version = 2;
+  # boot.loader.grub.device = "/dev/sda";
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
 
   i18n.defaultLocale = "en_GB.UTF-8";
   time.timeZone = "Europe/London";
@@ -50,10 +54,12 @@
 
   services.openssh = {
     enable = true;
-    passwordAuthentication = false;
-    kbdInteractiveAuthentication = false;
-    permitRootLogin = "no";
+    settings = {
+      passwordAuthentication = false;
+      permitRootLogin = "no";
+      kbdInteractiveAuthentication = false;
+    };
   };
 
-  system.stateVersion = "22.05";
+  system.stateVersion = "22.11";
 }

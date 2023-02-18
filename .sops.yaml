@@ -1,6 +1,6 @@
 keys:
   - &jagd age1525sjhkw5xg77gkt5aa5d7znmllggza3dts86et0p9ur9385dssq0n2jr5
-  - &basil age1ukypup3795x37vgke8njjvvg87sv5gsjuzxa3x9ku868du558slsmlqam6
+  - &basil age147jphxv0rm4qqsscusaw4glhyyvm9s0jvq22g5ksp8d8xrr7j5msczvu6u
 
 creation_rules:
   - path_regex: hosts/basil/secrets\.ya?ml$
