@@ -33,6 +33,7 @@
   };
 
   users.mutableUsers = false;
+  security.sudo.wheelNeedsPassword = false;
   users.users.jagd = {
     isNormalUser = true;
     shell = pkgs.zsh;
