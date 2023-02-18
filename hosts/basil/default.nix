@@ -22,6 +22,8 @@
   i18n.defaultLocale = "en_GB.UTF-8";
   time.timeZone = "Europe/London";
 
+  nixfiles.eraseYourDarlings.enable = true;
+
   nix = {
     package = pkgs.nixFlakes;
     extraOptions = ''
