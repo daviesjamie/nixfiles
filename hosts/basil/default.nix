@@ -29,6 +29,11 @@
 
     # Pin nixpkgs to the same version that built the system
     registry.nixpkgs.flake = inputs.nixpkgs;
+
+    # Collect nix store garbage and optimise daily.
+    gc.automatic = true;
+    gc.options = "--delete-older-than 30d";
+    optimise.automatic = true;
   };
 
   users.mutableUsers = false;
@@ -49,6 +54,7 @@
 
   environment.systemPackages = with pkgs; [
     git
+    tree
     vim
   ];
 
@@ -62,4 +68,7 @@
   };
 
   system.stateVersion = "22.11";
+
+  # Only keep the last 500MiB of systemd journal.
+  services.journald.extraConfig = "SystemMaxUse=500M";
 }
