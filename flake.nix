@@ -67,9 +67,8 @@
     );
 
     nixosConfigurations = {
-      basil = nixpkgs.lib.nixosSystem {
+      basil = lib.mkNixos {
         pkgs = legacyPackages.x86_64-linux;
-        specialArgs = {inherit inputs;};
         modules = [
           ./hosts/basil
         ];

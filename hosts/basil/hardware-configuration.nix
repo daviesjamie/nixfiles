@@ -9,13 +9,39 @@
   ];
 
   boot.initrd.availableKernelModules = ["ata_piix" "uhci_hcd" "virtio_pci" "virtio_scsi" "sd_mod" "sr_mod"];
-  boot.initrd.kernelModules = ["dm-snapshot"];
+  boot.initrd.kernelModules = [];
   boot.kernelModules = [];
   boot.extraModulePackages = [];
 
   fileSystems."/" = {
-    device = "/dev/disk/by-uuid/e373f129-de5b-42c7-a3c4-4c9926352e02";
-    fsType = "ext4";
+    device = "local/volatile/root";
+    fsType = "zfs";
+  };
+
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-uuid/34EB-E578";
+    fsType = "vfat";
+  };
+
+  fileSystems."/home" = {
+    device = "local/persistent/home";
+    fsType = "zfs";
+  };
+
+  fileSystems."/nix" = {
+    device = "local/persistent/nix";
+    fsType = "zfs";
+  };
+
+  fileSystems."/persist" = {
+    device = "local/persistent/persist";
+    fsType = "zfs";
+    neededForBoot = true;
+  };
+
+  fileSystems."/var/log" = {
+    device = "local/persistent/var-log";
+    fsType = "zfs";
   };
 
   swapDevices = [];

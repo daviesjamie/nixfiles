@@ -12,8 +12,8 @@ in {
     defaultTheme = lib.mkOption {
       type = types.str;
       default = "tomorrow-night";
-      example = ''programs.base16.defaultTheme = "tomorrow-night"'';
       description = "The default theme to load if the user hasn't chosen one";
+      example = ''programs.base16.defaultTheme = "tomorrow-night"'';
     };
 
     enableZshIntegration = lib.mkEnableOption "Whether to enable base16-shell integration with zsh";
