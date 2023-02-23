@@ -6,11 +6,16 @@
 }: {
   imports = [
     ./hardware-configuration.nix
+    ./nix.nix
     ./sops.nix
+    ./users.nix
+    ./zfs.nix
   ];
 
   networking.hostName = "basil";
   networking.hostId = "4e9cb0b8";
+
+  system.stateVersion = "22.11";
 
   boot.supportedFilesystems = ["zfs"];
   boot.loader.systemd-boot.enable = true;
@@ -20,37 +25,6 @@
   time.timeZone = "Europe/London";
 
   nixfiles.eraseYourDarlings.enable = true;
-
-  nix = {
-    package = pkgs.nixFlakes;
-    extraOptions = ''
-      experimental-features = nix-command flakes
-    '';
-
-    # Pin nixpkgs to the same version that built the system
-    registry.nixpkgs.flake = inputs.nixpkgs;
-
-    # Collect nix store garbage and optimise daily.
-    gc.automatic = true;
-    gc.options = "--delete-older-than 30d";
-    optimise.automatic = true;
-  };
-
-  users.mutableUsers = false;
-  security.sudo.wheelNeedsPassword = false;
-  users.users.jagd = {
-    isNormalUser = true;
-    shell = pkgs.zsh;
-    extraGroups = ["wheel"];
-    openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBJLkRU/0rnP7dYbZ/jRrl94vaDJvTi/JbwkZLDPIQOD"
-    ];
-    passwordFile = config.sops.secrets."users/jagd/password".path;
-  };
-
-  sops.secrets."users/jagd/password" = {
-    neededForUsers = true;
-  };
 
   environment.systemPackages = with pkgs; [
     git
@@ -67,27 +41,6 @@
     };
   };
 
-  system.stateVersion = "22.11";
-
   # Only keep the last 500MiB of systemd journal.
   services.journald.extraConfig = "SystemMaxUse=500M";
-
-  # Trimming informs the underlying storage devices of all blocks in the pool
-  # which are no longer allocated and allows thinly provisioned devices to
-  # reclaim the space.
-  # In order for auto-trim to work, it must be set on the pool:
-  # `sudo zpool set autotrim=on <pool>`
-  services.zfs.trim.enable = true;
-  services.zfs.trim.interval = "weekly";
-
-  # Scrubbing examines all data in the specified pools to verify that it
-  # checksums correctly.
-  services.zfs.autoScrub.enable = true;
-  services.zfs.autoScrub.interval = "monthly";
-
-  # Snapshots are read-only copies of a filesystem taken at a moment in time.
-  # In order for auto-snapshot to work, it must be set on the dataset:
-  # `sudo zfs set com.sun:auto-snapshot=true <dataset>`
-  services.zfs.autoSnapshot.enable = true;
-  services.zfs.autoSnapshot.monthly = 3;
 }
