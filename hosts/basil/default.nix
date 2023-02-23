@@ -13,9 +13,6 @@
   networking.hostId = "4e9cb0b8";
 
   boot.supportedFilesystems = ["zfs"];
-  # boot.loader.grub.enable = true;
-  # boot.loader.grub.version = 2;
-  # boot.loader.grub.device = "/dev/sda";
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
