@@ -6,16 +6,18 @@
 }: {
   imports = [
     ./hardware-configuration.nix
+    ./nix.nix
     ./sops.nix
+    ./users.nix
+    ./zfs.nix
   ];
 
   networking.hostName = "basil";
   networking.hostId = "4e9cb0b8";
 
+  system.stateVersion = "22.11";
+
   boot.supportedFilesystems = ["zfs"];
-  # boot.loader.grub.enable = true;
-  # boot.loader.grub.version = 2;
-  # boot.loader.grub.device = "/dev/sda";
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
@@ -24,34 +26,9 @@
 
   nixfiles.eraseYourDarlings.enable = true;
 
-  nix = {
-    package = pkgs.nixFlakes;
-    extraOptions = ''
-      experimental-features = nix-command flakes
-    '';
-
-    # Pin nixpkgs to the same version that built the system
-    registry.nixpkgs.flake = inputs.nixpkgs;
-  };
-
-  users.mutableUsers = false;
-  security.sudo.wheelNeedsPassword = false;
-  users.users.jagd = {
-    isNormalUser = true;
-    shell = pkgs.zsh;
-    extraGroups = ["wheel"];
-    openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBJLkRU/0rnP7dYbZ/jRrl94vaDJvTi/JbwkZLDPIQOD"
-    ];
-    passwordFile = config.sops.secrets."users/jagd/password".path;
-  };
-
-  sops.secrets."users/jagd/password" = {
-    neededForUsers = true;
-  };
-
   environment.systemPackages = with pkgs; [
     git
+    tree
     vim
   ];
 
@@ -64,5 +41,6 @@
     };
   };
 
-  system.stateVersion = "22.11";
+  # Only keep the last 500MiB of systemd journal.
+  services.journald.extraConfig = "SystemMaxUse=500M";
 }
