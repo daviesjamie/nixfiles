@@ -43,4 +43,18 @@
 
   # Only keep the last 500MiB of systemd journal.
   services.journald.extraConfig = "SystemMaxUse=500M";
+
+  # Use docker for OCI containers
+  virtualisation.docker.enable = true;
+  virtualisation.oci-containers.backend = "docker";
+
+  # Do a `docker system prune -a` every week
+  virtualisation.docker.autoPrune.enable = true;
+
+  virtualisation.oci-containers.containers = {
+    hello = {
+      image = "nginxdemos/hello";
+      ports = [ "8080:80" ];
+    };
+  };
 }
