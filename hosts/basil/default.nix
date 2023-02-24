@@ -10,6 +10,7 @@
     ./sops.nix
     ./users.nix
     ./zfs.nix
+    ./services/home-assistant.nix
   ];
 
   networking.hostName = "basil";
@@ -50,11 +51,4 @@
 
   # Do a `docker system prune -a` every week
   virtualisation.docker.autoPrune.enable = true;
-
-  virtualisation.oci-containers.containers = {
-    hello = {
-      image = "nginxdemos/hello";
-      ports = [ "8080:80" ];
-    };
-  };
 }
