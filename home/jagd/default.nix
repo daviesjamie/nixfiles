@@ -34,6 +34,13 @@
   programs.ghq.enable = true;
   programs.ghq.enableZshIntegration = true;
 
+  programs.neovim = {
+    enable = true;
+    defaultEditor = true;
+    vimAlias = true;
+    vimdiffAlias = true;
+  };
+
   home.packages = with pkgs; [
     jq
     ripgrep
