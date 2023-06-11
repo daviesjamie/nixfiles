@@ -51,5 +51,30 @@
       "*.log"
       "*.sqlite"
     ];
+
+    delta = {
+      enable = true;
+      options = {
+        jagd-theme = {
+          file-modified-label           = "Δ";
+          hunk-header-decoration-style  = "blue";
+          hunk-header-style             = "file line-number";
+          line-numbers-minus-style      = "red";
+          line-numbers-plus-style       = "green";
+          minus-emph-style              = "reverse red";
+          minus-style                   = "red";
+          plus-emph-style               = "reverse green";
+          plus-style                    = "green";
+          zero-style                    = "normal";
+        };
+
+        dark = true;
+        features = "jagd-theme";
+        line-numbers = true;
+        navigate = true;
+        navigate-regex = "^(commit|added:|removed:|renamed:|Δ|•)";
+        side-by-side = false;
+      };
+    };
   };
 }
