@@ -13,6 +13,9 @@
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
+    neovim.url = "github:daviesjamie/neovim-flake";
+    neovim.inputs.nixpkgs.follows = "nixpkgs";
+
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
   };
@@ -44,6 +47,7 @@
         default = pkgs.mkShell {
           buildInputs = with pkgs; [
             age
+            inputs.neovim.packages.${system}.default
             sops
             ssh-to-age
           ];

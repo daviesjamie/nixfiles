@@ -56,16 +56,16 @@
       enable = true;
       options = {
         jagd-theme = {
-          file-modified-label           = "Δ";
-          hunk-header-decoration-style  = "blue";
-          hunk-header-style             = "file line-number";
-          line-numbers-minus-style      = "red";
-          line-numbers-plus-style       = "green";
-          minus-emph-style              = "reverse red";
-          minus-style                   = "red";
-          plus-emph-style               = "reverse green";
-          plus-style                    = "green";
-          zero-style                    = "normal";
+          file-modified-label = "Δ";
+          hunk-header-decoration-style = "blue";
+          hunk-header-style = "file line-number";
+          line-numbers-minus-style = "red";
+          line-numbers-plus-style = "green";
+          minus-emph-style = "reverse red";
+          minus-style = "red";
+          plus-emph-style = "reverse green";
+          plus-style = "green";
+          zero-style = "normal";
         };
 
         dark = true;

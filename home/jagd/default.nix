@@ -8,6 +8,7 @@
     ./direnv.nix
     ./fzf.nix
     ./git.nix
+    ./nvim.nix
     ./starship.nix
     ./zsh.nix
   ];
@@ -33,13 +34,6 @@
 
   programs.ghq.enable = true;
   programs.ghq.enableZshIntegration = true;
-
-  programs.neovim = {
-    enable = true;
-    defaultEditor = true;
-    vimAlias = true;
-    vimdiffAlias = true;
-  };
 
   home.packages = with pkgs; [
     jq
