@@ -8,6 +8,7 @@
     ./direnv.nix
     ./fzf.nix
     ./git.nix
+    ./nvim.nix
     ./starship.nix
     ./zsh.nix
   ];
