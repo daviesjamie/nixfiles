@@ -29,6 +29,13 @@
       colour_bright_blue="#9ccfd8"
       set -g status-style "bg=$colour_base,fg=$colour_dim_blue"
       set -g window-status-current-style "bg=$colour_base,fg=$colour_bright_blue"
+
+      # Give the left status section (session name) a bit more room
+      set -g status-left-length 23
+
+      # Make sure the right-most part of the session name is visible if it's
+      # too long
+      set -g status-left "[#{=-20:session_name}] "
     '';
   };
 
