@@ -1,4 +1,4 @@
-{...}: {
+{pkgs, ...}: {
   programs.tmux = {
     enable = true;
 
@@ -31,4 +31,8 @@
       set -g window-status-current-style "bg=$colour_base,fg=$colour_bright_blue"
     '';
   };
+
+  home.packages = let
+    tmuxsesh = pkgs.writeScriptBin "tmux-sesh" (builtins.readFile ./bin/tmux-sesh);
+  in [tmuxsesh];
 }
