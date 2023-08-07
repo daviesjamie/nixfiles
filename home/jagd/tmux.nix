@@ -23,6 +23,9 @@
       bind -T copy-mode-vi V send-keys -X select-line
       bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel
 
+      # Run tmux-sesh in a new window from anywhere with ctrl+g
+      bind-key -n C-g new-window tmux-sesh
+
       # Make colors less garish
       colour_base="black"
       colour_dim_blue="#56949f"
