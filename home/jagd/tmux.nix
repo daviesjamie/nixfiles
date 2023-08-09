@@ -43,6 +43,7 @@
   };
 
   home.packages = let
+    clone = pkgs.writeScriptBin "clone" (builtins.readFile ./bin/clone);
     tmuxsesh = pkgs.writeScriptBin "tmux-sesh" (builtins.readFile ./bin/tmux-sesh);
-  in [tmuxsesh];
+  in [clone tmuxsesh];
 }

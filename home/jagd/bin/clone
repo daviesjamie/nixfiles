@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+
+read -d '' USAGE <<EOS
+Usage: $0 [-t|--temp] [--no-tmux] [-b|--branch <branch>] [-p|--ssh]
+    [-h|--help] <repo_url>"
+EOS
+
+POSITIONAL_ARGS=()
+
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        -t|--temp)
+            TEMP="YES"
+            shift
+            ;;
+        --no-tmux)
+            NO_TMUX="YES"
+            shift
+            ;;
+        -b|--branch)
+            BRANCH=$2
+            shift
+            shift
+            ;;
+        -p|--ssh)
+            SSH="YES"
+            shift
+            ;;
+        -h|--help)
+            echo "$USAGE"
+            exit 0
+            ;;
+        -*|--*)
+            echo "Unknown arg: $1"
+            echo "$USAGE"
+            exit 1
+            ;;
+        *)
+            POSITIONAL_ARGS+=("$1")
+            shift
+            ;;
+    esac
+done
+
+if [[ ${#POSITIONAL_ARGS[@]} -ne 1 ]]; then
+    echo "Incorrect repo specification: expected 1 argument, received ${#POSITIONAL_ARGS[@]}"
+    echo "$USAGE"
+    exit 1
+fi
+
+repo_url=${POSITIONAL_ARGS[0]}
+[[ -n "$BRANCH" ]] && branch_arg="-b $BRANCH" || branch_arg=""
+
+if [[ -n $TEMP ]]; then
+    repo_name=$(basename $repo_url)
+    repo_path=$(TMPDIR="/tmp" mktemp -d -t "$repo_name-XXXXXX")
+    git clone $branch_arg $repo_url $repo_path
+else
+    [[ -n "$SSH" ]] && ssh_arg="-p" || ssh_arg=""
+    ghq get $ssh_arg $branch_arg $repo_url
+    repo_path=$(ghq list -p $repo_url)
+fi
+
+if [[ -n "$NO_TMUX" ]]; then
+    cd $repo_path
+else
+    tmux-sesh $repo_path
+fi
