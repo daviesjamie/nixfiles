@@ -1,18 +1,23 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-if [[ $# -gt 0 ]]; then
-    repo_href=$(ghq list | fzf -1 -q "$*")
+if [[ -d "$*" ]]; then
+    repo_path="$*"
 else
-    repo_href=$(ghq list | fzf)
+    if [[ $# -gt 0 ]]; then
+        repo_href=$(ghq list | fzf -1 -q "$*")
+    else
+        repo_href=$(ghq list | fzf)
+    fi
+
+    if [[ -z $repo_href ]]; then
+        "Couldn't find repo $repo_href"
+        exit 1
+    fi
+
+    repo_path=$(ghq list -p -e $repo_href)
 fi
 
-if [[ -z $repo_href ]]; then
-    exit 1
-fi
-
-repo_path=$(ghq list -p -e $repo_href)
 repo_name=$(basename $repo_path)
-
 tmux_running=$(pgrep tmux)
 
 if [[ -z $tmux_running ]]; then
@@ -27,4 +32,8 @@ if ! tmux has-session -t=$repo_name 2> /dev/null; then
 fi
 
 # Attach or switch to the session
-tmux attach -t $repo_name
+if [[ -z $TMUX ]]; then
+    tmux attach -t $repo_name
+else
+    tmux switch-client -t $repo_name
+fi
