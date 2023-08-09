@@ -21,6 +21,16 @@ in {
     envExtra = ''
       export EDITOR=vim
       export VISUAL=$EDITOR
+
+      _add_to_path() {
+          if [[ -d "$1" ]] && [[ ! $PATH =~ "$1" ]]; then
+              PATH="$1:$PATH"
+          fi
+      }
+
+      _add_to_path "$HOME/bin"
+
+      export PATH
     '';
 
     initExtra = ''
