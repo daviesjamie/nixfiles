@@ -45,6 +45,9 @@ in {
       bindkey "^[[4~" end-of-line
       bindkey "^[[3~" delete-char
 
+      # Run tmux-sesh with ctrl+g
+      bindkey -s ^g "tmux-sesh\n"
+
       ########################################################################
       # COMPLETION
 
