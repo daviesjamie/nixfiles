@@ -1,4 +1,9 @@
-{pkgs, ...}: {
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
   programs.tmux = {
     enable = true;
 
@@ -42,7 +47,13 @@
     '';
   };
 
-  home.packages = let
-    tmuxsesh = pkgs.writeScriptBin "tmux-sesh" (builtins.readFile ./bin/tmux-sesh);
-  in [tmuxsesh];
+  home.file = lib.mkIf config.programs.ghq.enable {
+    "bin/clone" = {
+      source = ./bin/clone;
+    };
+
+    "bin/tmux-sesh" = {
+      source = ./bin/tmux-sesh;
+    };
+  };
 }
