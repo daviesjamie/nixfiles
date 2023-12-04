@@ -1,3 +1,3 @@
 {
-  erase-your-darlings = import ./erase-your-darlings.nix;
+  erase-your-darlings = import ./erase-your-darlings;
 }
