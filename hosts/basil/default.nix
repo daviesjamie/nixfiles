@@ -43,6 +43,8 @@ in {
     };
   };
 
+  programs.zsh.enable = true;
+
   # Only keep the last 500MiB of systemd journal.
   services.journald.extraConfig = "SystemMaxUse=500M";
 
