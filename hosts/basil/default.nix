@@ -53,4 +53,10 @@ in {
   nixfiles.paperless.enable = true;
   nixfiles.paperless.consumeDir = "${persistDir}/paperless/consume";
   nixfiles.paperless.exportDir = "${persistDir}/paperless/export";
+
+  services.caddy.enable = true;
+  services.caddy.virtualHosts."paperless.jagd.me:80".extraConfig = ''
+    encode gzip
+    reverse_proxy http://localhost:${toString config.nixfiles.paperless.port}
+  '';
 }
