@@ -104,6 +104,19 @@
     volumes = map (mkVolumeDef container) container.volumes;
   };
 
+  mkVolumeTmpFiles = name: container:
+    lib.nameValuePair "${cfg.backend}-${name}" (builtins.listToAttrs
+      (map (volume: {
+          name =
+            if volume.host != null
+            then volume.host
+            else "${cfg.volumeBaseDir}/${container.volumeSubDir}/${volume.name}";
+          value = {
+            d = {mode = "0755";};
+          };
+        })
+        container.volumes));
+
   cfg = config.nixfiles.containers;
 
   allContainers = let
@@ -142,5 +155,6 @@ in {
         else {}
       )
     ];
+    systemd.tmpfiles.settings = lib.mapAttrs' mkVolumeTmpFiles allContainers;
   };
 }
