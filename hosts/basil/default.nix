@@ -45,6 +45,8 @@ in {
 
   programs.zsh.enable = true;
 
+  networking.firewall.allowedTCPPorts = [80];
+
   # Only keep the last 500MiB of systemd journal.
   services.journald.extraConfig = "SystemMaxUse=500M";
 
