@@ -112,7 +112,11 @@
             then volume.host
             else "${cfg.volumeBaseDir}/${container.volumeSubDir}/${volume.name}";
           value = {
-            d = {mode = "0755";};
+            d = {
+              user = "root";
+              group = "root";
+              mode = "0755";
+            };
           };
         })
         container.volumes));
