@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  pkgs,
   ...
 }: let
   cfg = config.nixfiles.paperless;
@@ -9,6 +8,7 @@
 in {
   imports = [
     ./options.nix
+    ./user.nix
   ];
 
   config = lib.mkIf cfg.enable {
