@@ -42,8 +42,8 @@ in {
         web = {
           image = "ghcr.io/paperless-ngx/paperless-ngx:${cfg.imageTag}";
           dependsOn = [
-            "paperless-redis"
             "paperless-db"
+            "paperless-redis"
           ];
           ports = [
             {
@@ -78,6 +78,8 @@ in {
               if backend == "docker"
               then "paperless-db"
               else "localhost";
+            "USERMAP_UID" = "${toString config.users.users.paperless.uid}";
+            "USERMAP_GID" = "${toString config.users.groups.paperless.gid}";
           };
         };
       };

@@ -1,4 +1,8 @@
-{config, lib, ...}: let
+{
+  config,
+  lib,
+  ...
+}: let
   cfg = config.nixfiles.paperless;
 in {
   config = lib.mkIf cfg.enable {
@@ -8,6 +12,7 @@ in {
 
     users.users.paperless = {
       description = "Paperless service user";
+      uid = 995;
       isSystemUser = true;
       createHome = false;
       group = "paperless";
@@ -17,6 +22,6 @@ in {
       hashedPasswordFile = config.sops.secrets."paperless/user/password".path;
     };
 
-    users.groups.paperless = {};
+    users.groups.paperless = {gid = 993;};
   };
 }
