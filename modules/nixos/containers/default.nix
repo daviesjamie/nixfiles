@@ -13,6 +13,7 @@
     name,
     host,
     inner,
+    ...
   }:
     if host != null
     then "${host}:${inner}"
@@ -113,9 +114,9 @@
             else "${cfg.volumeBaseDir}/${container.volumeSubDir}/${volume.name}";
           value = {
             d = {
-              user = "root";
-              group = "root";
-              mode = "0755";
+              user = volume.user;
+              group = volume.group;
+              mode = volume.mode;
             };
           };
         })

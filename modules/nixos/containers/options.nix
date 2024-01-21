@@ -28,6 +28,24 @@
       type = lib.types.str;
       description = "The directory in the container to mount the volume to.";
     };
+
+    user = lib.mkOption {
+      type = lib.types.str;
+      default = "root";
+      description = "The owner (user) of the volume directory on the host.";
+    };
+
+    group = lib.mkOption {
+      type = lib.types.str;
+      default = "root";
+      description = "The owner (group) of the volume directory on the host.";
+    };
+
+    mode = lib.mkOption {
+      type = lib.types.str;
+      default = "0755";
+      description = "The permissions (mode) of the volume directory on the host.";
+    };
   };
 
   containerOptions = {
