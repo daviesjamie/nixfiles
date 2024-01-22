@@ -23,17 +23,5 @@ in {
     };
 
     users.groups.paperless = {gid = 993;};
-
-    services.openssh.sftpServerExecutable = "internal-sftp";
-    services.openssh.extraConfig = ''
-      Match User ${config.users.users.paperless.name}
-        ForceCommand internal-sftp
-        ChrootDirectory ${cfg.consumeDir}
-        PermitTunnel no
-        AllowAgentForwarding no
-        AllowTcpForwarding no
-        X11Forwarding no
-      Match All
-    '';
   };
 }
