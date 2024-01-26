@@ -11,6 +11,12 @@
       description = "Whether to enable the Paperless service.";
     };
 
+    enableSamba = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      description = "Whether to enable access to the `consumeDir` via CIFS/Samba";
+    };
+
     exportDir = lib.mkOption {
       type = lib.types.path;
       description = "The path that the Paperless document exporter will export data to.";

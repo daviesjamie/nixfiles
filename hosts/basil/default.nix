@@ -1,6 +1,5 @@
 {
   config,
-  inputs,
   pkgs,
   ...
 }: let
@@ -52,7 +51,9 @@ in {
 
   nixfiles.containers.backend = "podman";
   nixfiles.containers.volumeBaseDir = "${persistDir}/docker-volumes";
+
   nixfiles.paperless.enable = true;
+  nixfiles.paperless.enableSamba = true;
   nixfiles.paperless.consumeDir = "${persistDir}/paperless/consume";
   nixfiles.paperless.exportDir = "${persistDir}/paperless/export";
 

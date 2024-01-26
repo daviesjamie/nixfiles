@@ -8,6 +8,7 @@
 in {
   imports = [
     ./options.nix
+    ./samba.nix
     ./user.nix
   ];
 
@@ -55,18 +56,26 @@ in {
             {
               name = "data";
               inner = "/usr/src/paperless/data";
+              user = "paperless";
+              group = "paperless";
             }
             {
               name = "media";
               inner = "/usr/src/paperless/media";
+              user = "paperless";
+              group = "paperless";
             }
             {
               host = cfg.exportDir;
               inner = "/usr/src/paperless/export";
+              user = "paperless";
+              group = "paperless";
             }
             {
               host = cfg.consumeDir;
               inner = "/usr/src/paperless/consume";
+              user = "paperless";
+              group = "paperless";
             }
           ];
           environment = {
