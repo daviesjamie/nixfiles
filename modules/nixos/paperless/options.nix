@@ -2,19 +2,13 @@
   options.nixfiles.paperless = {
     consumeDir = lib.mkOption {
       type = lib.types.path;
-      description = "The path that the Paperless service will consume documents from. The parent directory of this directory will be accessible over SFTP if enableSftp is true.";
+      description = "The path that the Paperless service will consume documents from.";
     };
 
     enable = lib.mkOption {
       type = lib.types.bool;
       default = false;
       description = "Whether to enable the Paperless service.";
-    };
-
-    enableSftp = lib.mkOption {
-      type = lib.types.bool;
-      default = true;
-      description = "Whether to allow SFTP access to the parent dir of the consume dir.";
     };
 
     exportDir = lib.mkOption {

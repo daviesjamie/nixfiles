@@ -8,7 +8,6 @@
 in {
   imports = [
     ./options.nix
-    ./sftp.nix
     ./user.nix
   ];
 
@@ -68,9 +67,6 @@ in {
             {
               host = cfg.consumeDir;
               inner = "/usr/src/paperless/consume";
-              user = "root";
-              group = "paperless";
-              mode = "0775";
             }
           ];
           environment = {
