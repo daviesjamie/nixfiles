@@ -1,9 +1,10 @@
 {
   config,
-  inputs,
   pkgs,
   ...
-}: {
+}: let
+  persistDir = config.nixfiles.eraseYourDarlings.persistDir;
+in {
   imports = [
     ./hardware-configuration.nix
     ./nix.nix
@@ -35,12 +36,30 @@
   services.openssh = {
     enable = true;
     settings = {
-      passwordAuthentication = false;
-      permitRootLogin = "no";
-      kbdInteractiveAuthentication = false;
+      PasswordAuthentication = false;
+      PermitRootLogin = "no";
+      KbdInteractiveAuthentication = false;
     };
   };
 
+  programs.zsh.enable = true;
+
+  networking.firewall.allowedTCPPorts = [80];
+
   # Only keep the last 500MiB of systemd journal.
   services.journald.extraConfig = "SystemMaxUse=500M";
+
+  nixfiles.containers.backend = "podman";
+  nixfiles.containers.volumeBaseDir = "${persistDir}/docker-volumes";
+
+  nixfiles.paperless.enable = true;
+  nixfiles.paperless.enableSamba = true;
+  nixfiles.paperless.consumeDir = "${persistDir}/paperless/consume";
+  nixfiles.paperless.exportDir = "${persistDir}/paperless/export";
+
+  services.caddy.enable = true;
+  services.caddy.virtualHosts."paperless.jagd.me:80".extraConfig = ''
+    encode gzip
+    reverse_proxy http://localhost:${toString config.nixfiles.paperless.port}
+  '';
 }

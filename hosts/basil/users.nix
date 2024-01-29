@@ -12,7 +12,7 @@
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBJLkRU/0rnP7dYbZ/jRrl94vaDJvTi/JbwkZLDPIQOD"
     ];
-    passwordFile = config.sops.secrets."users/jagd/password".path;
+    hashedPasswordFile = config.sops.secrets."users/jagd/password".path;
   };
 
   sops.secrets."users/jagd/password" = {

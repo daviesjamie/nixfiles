@@ -1,3 +1,5 @@
 {
-  erase-your-darlings = import ./erase-your-darlings.nix;
+  containers = import ./containers;
+  erase-your-darlings = import ./erase-your-darlings;
+  paperless = import ./paperless;
 }
