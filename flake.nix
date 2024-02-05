@@ -48,6 +48,7 @@
           buildInputs = with pkgs; [
             age
             inputs.neovim.packages.${system}.default
+            restic
             sops
             ssh-to-age
           ];
