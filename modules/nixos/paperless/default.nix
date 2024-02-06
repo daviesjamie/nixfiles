@@ -1,10 +1,15 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }: let
   cfg = config.nixfiles.paperless;
   backend = config.nixfiles.containers.backend;
+  backendPkg =
+    if backend == "docker"
+    then pkgs.docker
+    else pkgs.podman;
 in {
   imports = [
     ./options.nix
@@ -92,6 +97,20 @@ in {
           };
         };
       };
+    };
+
+    nixfiles.backups = let
+      command = ''
+        ${backendPkg}/bin/${backend} exec -i paperless-web document_exporter ../export
+      '';
+    in {
+      backups = {
+        paperless = {
+          prepareCommand = "/run/wrappers/bin/sudo ${command}";
+          paths = [cfg.exportDir];
+        };
+      };
+      sudoRules = [{inherit command;}];
     };
   };
 }
