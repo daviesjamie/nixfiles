@@ -18,6 +18,32 @@
       description = "A script that must run after finishing the backup process";
     };
 
+    retention = {
+      daily = lib.mkOption {
+        type = lib.types.int;
+        default = 7;
+        description = "For the last n days which have one or more snapshots, keep only the most recent one for each day.";
+      };
+
+      weekly = lib.mkOption {
+        type = lib.types.int;
+        default = 5;
+        description = "for the last n weeks which have one or more snapshots, keep only the most recent one for each week.";
+      };
+
+      monthly = lib.mkOption {
+        type = lib.types.int;
+        default = 12;
+        description = "for the last n months which have one or more snapshots, keep only the most recent one for each month.";
+      };
+
+      yearly = lib.mkOption {
+        type = lib.types.int;
+        default = 75;
+        description = "for the last n years which have one or more snapshots, keep only the most recent one for each year.";
+      };
+    };
+
     startAt = lib.mkOption {
       type = lib.types.str;
       default = "daily";

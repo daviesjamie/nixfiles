@@ -24,10 +24,10 @@
       passwordFile = cfg.repoPasswordFile;
       paths = options.paths;
       pruneOpts = [
-        "--keep-daily 7"
-        "--keep-weekly 5"
-        "--keep-monthly 12"
-        "--keep-yearly 75"
+        "--keep-daily ${toString options.retention.daily}"
+        "--keep-weekly ${toString options.retention.weekly}"
+        "--keep-monthly ${toString options.retention.monthly}"
+        "--keep-yearly ${toString options.retention.yearly}"
       ];
       repositoryFile = cfg.repoLocationFile;
       timerConfig = {
