@@ -61,8 +61,8 @@ in {
 
   sops.secrets."backups/bucket/accessKey" = {};
   sops.secrets."backups/bucket/secretKey" = {};
-  sops.secrets."backups/repo/location" = {};
-  sops.secrets."backups/repo/password" = {};
+  sops.secrets."backups/repo/location" = { owner = config.users.users.backups.name; };
+  sops.secrets."backups/repo/password" = { owner = config.users.users.backups.name; };
 
   sops.templates."backups.env".content = ''
     AWS_ACCESS_KEY_ID="${config.sops.placeholder."backups/bucket/accessKey"}"
