@@ -6,6 +6,7 @@
   persistDir = config.nixfiles.eraseYourDarlings.persistDir;
 in {
   imports = [
+    ./backups.nix
     ./hardware-configuration.nix
     ./nix.nix
     ./sops.nix
@@ -44,35 +45,21 @@ in {
 
   programs.zsh.enable = true;
 
-  networking.firewall.allowedTCPPorts = [80];
-
   # Only keep the last 500MiB of systemd journal.
   services.journald.extraConfig = "SystemMaxUse=500M";
 
+  # Containers
   nixfiles.containers.backend = "podman";
   nixfiles.containers.volumeBaseDir = "${persistDir}/docker-volumes";
 
+  # Paperless
   nixfiles.paperless.enable = true;
   nixfiles.paperless.enableSamba = true;
   nixfiles.paperless.consumeDir = "${persistDir}/paperless/consume";
   nixfiles.paperless.exportDir = "${persistDir}/paperless/export";
 
-  nixfiles.backups.enable = true;
-
-  sops.secrets."backups/bucket/accessKey" = {};
-  sops.secrets."backups/bucket/secretKey" = {};
-  sops.secrets."backups/repo/location" = { owner = config.users.users.backups.name; };
-  sops.secrets."backups/repo/password" = { owner = config.users.users.backups.name; };
-
-  sops.templates."backups.env".content = ''
-    AWS_ACCESS_KEY_ID="${config.sops.placeholder."backups/bucket/accessKey"}"
-    AWS_SECRET_ACCESS_KEY="${config.sops.placeholder."backups/bucket/secretKey"}"
-  '';
-
-  nixfiles.backups.environmentFile = config.sops.templates."backups.env".path;
-  nixfiles.backups.repoLocationFile = config.sops.secrets."backups/repo/location".path;
-  nixfiles.backups.repoPasswordFile = config.sops.secrets."backups/repo/password".path;
-
+  # Caddy reverse proxy
+  networking.firewall.allowedTCPPorts = [80];
   services.caddy.enable = true;
   services.caddy.virtualHosts."paperless.jagd.me:80".extraConfig = ''
     encode gzip
