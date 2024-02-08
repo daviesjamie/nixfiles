@@ -6,6 +6,7 @@
   persistDir = config.nixfiles.eraseYourDarlings.persistDir;
 in {
   imports = [
+    ./backups.nix
     ./hardware-configuration.nix
     ./nix.nix
     ./sops.nix
@@ -44,19 +45,21 @@ in {
 
   programs.zsh.enable = true;
 
-  networking.firewall.allowedTCPPorts = [80];
-
   # Only keep the last 500MiB of systemd journal.
   services.journald.extraConfig = "SystemMaxUse=500M";
 
+  # Containers
   nixfiles.containers.backend = "podman";
   nixfiles.containers.volumeBaseDir = "${persistDir}/docker-volumes";
 
+  # Paperless
   nixfiles.paperless.enable = true;
   nixfiles.paperless.enableSamba = true;
   nixfiles.paperless.consumeDir = "${persistDir}/paperless/consume";
   nixfiles.paperless.exportDir = "${persistDir}/paperless/export";
 
+  # Caddy reverse proxy
+  networking.firewall.allowedTCPPorts = [80];
   services.caddy.enable = true;
   services.caddy.virtualHosts."paperless.jagd.me:80".extraConfig = ''
     encode gzip
