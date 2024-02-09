@@ -6,6 +6,12 @@
       description = "Whether to enable the AdGuard Home service.";
     };
 
+    exposeWizard = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      description = "Whether the port for this container should route to the regular web interface or the initial set-up wizard.";
+    };
+
     imageTag = lib.mkOption {
       type = lib.types.str;
       default = "latest";

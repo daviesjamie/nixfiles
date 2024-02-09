@@ -14,23 +14,31 @@ in {
       containers = {
         adguardhome = {
           image = "adguard/adguardhome:${cfg.imageTag}";
-          ports = [
-            {
-              # DNS
-              host = 53;
-              inner = 53;
-            }
-            {
-              # Web interface
-              host = cfg.port;
-              inner = 80;
-            }
-            {
-              # Intro wizard interface
-              host = 3123;
-              inner = 3000;
-            }
-          ];
+          ports =
+            [
+              {
+                # DNS
+                host = 53;
+                inner = 53;
+              }
+            ]
+            ++ (
+              if cfg.exposeWizard
+              then [
+                {
+                  # Initial set-up wizard
+                  host = cfg.port;
+                  inner = 3000;
+                }
+              ]
+              else [
+                {
+                  # Web interface
+                  host = cfg.port;
+                  inner = 80;
+                }
+              ]
+            );
           volumes = [
             {
               name = "data";

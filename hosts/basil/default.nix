@@ -48,7 +48,7 @@ in {
   # Only keep the last 500MiB of systemd journal.
   services.journald.extraConfig = "SystemMaxUse=500M";
 
-  networking.firewall.allowedTCPPorts = [53 80 3123];
+  networking.firewall.allowedTCPPorts = [53 80];
   networking.firewall.allowedUDPPorts = [53];
 
   # Containers
@@ -64,6 +64,7 @@ in {
   # AdGuard Home
   nixfiles.adguardhome.enable = true;
   nixfiles.adguardhome.port = 8001;
+  nixfiles.adguardhome.exposeWizard = true;
 
   # Caddy reverse proxy
   services.caddy.enable = true;
@@ -72,7 +73,6 @@ in {
     reverse_proxy http://localhost:${toString config.nixfiles.paperless.port}
   '';
   services.caddy.virtualHosts."dns.jagd.me:80".extraConfig = ''
-    encode gzip
     reverse_proxy http://localhost:${toString config.nixfiles.adguardhome.port}
   '';
 }
