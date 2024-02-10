@@ -4,13 +4,10 @@
   pkgs,
   ...
 }: let
-  mkPortDef = {
-    expose,
-    host,
-    inner,
-  }: let
-    ip = if expose then "0.0.0.0" else "127.0.0.1";
-  in "${ip}:${toString host}:${toString inner}";
+  mkPortDef = portCfg:
+    if builtins.typeOf portCfg == "string"
+    then portCfg
+    else "127.0.0.1:${toString portCfg.host}:${toString portCfg.inner}";
 
   mkVolumeDef = container: {
     name,

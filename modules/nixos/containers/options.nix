@@ -1,11 +1,5 @@
 {lib, ...}: let
   portOptions = {
-    expose = lib.mkOption {
-      type = lib.types.bool;
-      default = false;
-      description = "Whether the port should listen on all interfaces (0.0.0.0). Default is false, and only listens on 127.0.0.1.";
-    };
-
     host = lib.mkOption {
       type = lib.types.int;
       description = "The host port (on 127.0.0.1) to expose the container port on.";
@@ -117,9 +111,13 @@
     };
 
     ports = lib.mkOption {
-      type = lib.types.listOf (lib.types.submodule {options = portOptions;});
+      type = lib.types.listOf (lib.types.either lib.types.str (lib.types.submodule {options = portOptions;}));
       default = [];
-      description = "A list of ports to expose.";
+      description = ''
+        A list of ports to expose. Can either be attrsets describing the
+        mappings or strings which are passed verbatim to the
+        `virtualisation.oci-containers.containers.<name>.ports` setting.
+      '';
     };
 
     pullOnStart = lib.mkOption {

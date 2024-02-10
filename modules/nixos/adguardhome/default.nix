@@ -16,12 +16,9 @@ in {
           image = "adguard/adguardhome:${cfg.imageTag}";
           ports =
             [
-              {
-                # DNS
-                host = 53;
-                inner = 53;
-                expose = true;
-              }
+              # DNS
+              "0.0.0.0:53:53/tcp"
+              "0.0.0.0:53:53/udp"
             ]
             ++ (
               if cfg.exposeWizard
