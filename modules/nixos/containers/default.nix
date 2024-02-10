@@ -4,10 +4,12 @@
   pkgs,
   ...
 }: let
-  mkPortDef = {
-    host,
-    inner,
-  }: "127.0.0.1:${toString host}:${toString inner}";
+  cfg = config.nixfiles.containers;
+
+  mkPortDef = portCfg:
+    if builtins.typeOf portCfg == "string"
+    then portCfg
+    else "127.0.0.1:${toString portCfg.host}:${toString portCfg.inner}";
 
   mkVolumeDef = container: {
     name,
@@ -121,8 +123,6 @@
           };
         })
         container.volumes));
-
-  cfg = config.nixfiles.containers;
 
   allContainers = let
     mkPodContainer = podName: pod: containerName: container:
