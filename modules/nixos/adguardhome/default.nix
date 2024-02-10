@@ -20,6 +20,7 @@ in {
                 # DNS
                 host = 53;
                 inner = 53;
+                expose = true;
               }
             ]
             ++ (

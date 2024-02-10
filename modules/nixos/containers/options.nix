@@ -1,5 +1,11 @@
 {lib, ...}: let
   portOptions = {
+    expose = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      description = "Whether the port should listen on all interfaces (0.0.0.0). Default is false, and only listens on 127.0.0.1.";
+    };
+
     host = lib.mkOption {
       type = lib.types.int;
       description = "The host port (on 127.0.0.1) to expose the container port on.";

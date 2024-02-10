@@ -5,9 +5,12 @@
   ...
 }: let
   mkPortDef = {
+    expose,
     host,
     inner,
-  }: "127.0.0.1:${toString host}:${toString inner}";
+  }: let
+    ip = if expose then "0.0.0.0" else "127.0.0.1";
+  in "${ip}:${toString host}:${toString inner}";
 
   mkVolumeDef = container: {
     name,
