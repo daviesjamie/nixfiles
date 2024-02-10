@@ -64,7 +64,6 @@ in {
   # AdGuard Home
   nixfiles.adguardhome.enable = true;
   nixfiles.adguardhome.port = 8001;
-  nixfiles.adguardhome.exposeWizard = true;
 
   # Caddy reverse proxy
   services.caddy.enable = true;
