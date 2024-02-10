@@ -4,6 +4,8 @@
   pkgs,
   ...
 }: let
+  cfg = config.nixfiles.containers;
+
   mkPortDef = portCfg:
     if builtins.typeOf portCfg == "string"
     then portCfg
@@ -121,8 +123,6 @@
           };
         })
         container.volumes));
-
-  cfg = config.nixfiles.containers;
 
   allContainers = let
     mkPodContainer = podName: pod: containerName: container:

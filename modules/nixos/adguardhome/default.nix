@@ -50,5 +50,9 @@ in {
         };
       };
     };
+
+    nixfiles.backups.backups.adguardhome.paths = let
+      volumeBaseDir = config.nixfiles.containers.volumeBaseDir;
+    in ["${volumeBaseDir}/adguardhome/config"];
   };
 }
