@@ -65,13 +65,22 @@ in {
   nixfiles.adguardhome.enable = true;
   nixfiles.adguardhome.port = 8001;
 
+  # MediaWiki
+  nixfiles.bookstack.enable = true;
+  nixfiles.bookstack.port = 8002;
+  nixfiles.bookstack.appUrl = "http://wiki.jagd.me";
+
   # Caddy reverse proxy
   services.caddy.enable = true;
+  services.caddy.virtualHosts."dns.jagd.me:80".extraConfig = ''
+    reverse_proxy http://localhost:${toString config.nixfiles.adguardhome.port}
+  '';
   services.caddy.virtualHosts."paperless.jagd.me:80".extraConfig = ''
     encode gzip
     reverse_proxy http://localhost:${toString config.nixfiles.paperless.port}
   '';
-  services.caddy.virtualHosts."dns.jagd.me:80".extraConfig = ''
-    reverse_proxy http://localhost:${toString config.nixfiles.adguardhome.port}
+  services.caddy.virtualHosts."wiki.jagd.me:80".extraConfig = ''
+    encode gzip
+    reverse_proxy http://localhost:${toString config.nixfiles.bookstack.port}
   '';
 }
