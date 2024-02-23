@@ -67,6 +67,9 @@ in {
 
   # Caddy reverse proxy
   services.caddy.enable = true;
+  services.caddy.package = pkgs.callPackage ../../pkgs/caddy {
+    plugins = ["github.com/caddy-dns/digitalocean"];
+  };
   services.caddy.virtualHosts."paperless.jagd.me:80".extraConfig = ''
     encode gzip
     reverse_proxy http://localhost:${toString config.nixfiles.paperless.port}
