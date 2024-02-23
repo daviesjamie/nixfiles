@@ -16,5 +16,8 @@
     gc.automatic = true;
     gc.options = "--delete-older-than 30d";
     optimise.automatic = true;
+
+    # Disable sandbox so that `xcaddy` build tool can access the internet
+    settings.sandbox = false;
   };
 }
