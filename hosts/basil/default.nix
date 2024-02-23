@@ -67,15 +67,33 @@ in {
 
   # Caddy reverse proxy
   services.caddy.enable = true;
+  services.caddy.email = "letsencrypt@jagd.me";
   services.caddy.package = pkgs.callPackage ../../pkgs/caddy {
     plugins = ["github.com/caddy-dns/digitalocean"];
   };
-  services.caddy.virtualHosts."paperless.jagd.me:80".extraConfig = ''
-    encode gzip
-    reverse_proxy http://localhost:${toString config.nixfiles.paperless.port}
-  '';
-  services.caddy.virtualHosts."dns.jagd.me:80".extraConfig = ''
-    reverse_proxy http://localhost:${toString config.nixfiles.adguardhome.port}
+
+  services.caddy.virtualHosts = let
+    tlsConfig = ''
+      tls {
+        dns digitalocean {env.DIGITALOCEAN_API_KEY}
+      }
+    '';
+  in {
+    "dns.jagd.me".extraConfig = ''
+      reverse_proxy :${toString config.nixfiles.adguardhome.port}
+      ${tlsConfig}
+    '';
+    "paperless.jagd.me".extraConfig = ''
+      encode gzip
+      reverse_proxy :${toString config.nixfiles.paperless.port}
+      ${tlsConfig}
+    '';
+  };
+
+  sops.secrets."dns/digitalocean/apiKey" = {};
+
+  sops.templates."caddy.env".content = ''
+    DIGITALOCEAN_API_KEY="${config.sops.placeholder."dns/digitalocean/apiKey"}"
   '';
 
   systemd.services.caddy = {
@@ -83,6 +101,8 @@ in {
       # Required to use ports < 1024
       AmbientCapabilities = "cap_net_bind_service";
       CapabilityBoundingSet = "cap_net_bind_service";
+
+      EnvironmentFile = config.sops.templates."caddy.env".path;
     };
   };
 }
