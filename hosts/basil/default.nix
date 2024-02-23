@@ -72,26 +72,34 @@ in {
     plugins = ["github.com/caddy-dns/digitalocean"];
   };
 
-  services.caddy.virtualHosts = let
-    tlsConfig = ''
+  services.caddy.extraConfig = ''
+    (acme_config) {
       tls {
         dns digitalocean {env.DIGITALOCEAN_API_KEY}
+        http { disabled true }
+        tls-alpn { disabled true }
+        dns {
+          propagation_delay 60s
+          propagation_timeout 10m
+          resolvers 9.9.9.9
+        }
       }
-    '';
-  in {
+    }
+  '';
+
+  services.caddy.virtualHosts = {
     "dns.jagd.me".extraConfig = ''
       reverse_proxy :${toString config.nixfiles.adguardhome.port}
-      ${tlsConfig}
+      import acme_config
     '';
     "paperless.jagd.me".extraConfig = ''
       encode gzip
       reverse_proxy :${toString config.nixfiles.paperless.port}
-      ${tlsConfig}
+      import acme_config
     '';
   };
 
   sops.secrets."dns/digitalocean/apiKey" = {};
-
   sops.templates."caddy.env".content = ''
     DIGITALOCEAN_API_KEY="${config.sops.placeholder."dns/digitalocean/apiKey"}"
   '';
