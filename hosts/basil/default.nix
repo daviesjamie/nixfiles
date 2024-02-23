@@ -77,4 +77,12 @@ in {
   services.caddy.virtualHosts."dns.jagd.me:80".extraConfig = ''
     reverse_proxy http://localhost:${toString config.nixfiles.adguardhome.port}
   '';
+
+  systemd.services.caddy = {
+    serviceConfig = {
+      # Required to use ports < 1024
+      AmbientCapabilities = "cap_net_bind_service";
+      CapabilityBoundingSet = "cap_net_bind_service";
+    };
+  };
 }
